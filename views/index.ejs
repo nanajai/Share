@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="javascripts/utilities.js"></script>
+  </head>
+  <body>
+    <% include templates/header.ejs %>
+
+    <div id = "wallheader" class = "col-lg-5">
+      <div class="well vertical-center">
+          <strong>Posts</strong>
+          <div class="form-group">
+            <label for="srch">Search:</label>
+            <input type="text" class="form-control" id="srch" onkeyup="filter(this)"/>
+          </div>
+      </div>
+
+
+      <div id = "wallposts" class="list-group">
+        <% wallposts.forEach(function(item) { %>
+        <a href='/viewpost?id='+<%= item.id %>>
+          <div class="item" id=<%= item.id %> >
+              <div class="thumbnail">
+                  <div class="caption">
+                     <h4 class="group inner list-group-item-heading">
+                                 <%= item.title %>
+                      </h4>
+                     <p class="group inner list-group-item-text">
+                                <%= item.postdata %>
+                      </p>
+                      <div id = "taghousing" class-"pull-right" style ="padding-bottom:10px">
+                        <% var tagArr = item.tags.split(','); %>
+                        <%    for (var i=0; i<tagArr.length; i ++){ %>
+                              <span  class="label label-info pull-right" style="margin-left:3px"><%=tagArr[i]%></span> %>
+                      <%      } %>
+                      </div>
+                  </div>
+
+             </div>
+           </div>
+         </a>
+        <% }); %>
+
+      </div>
+    </div>
+
+    <div class ="col-lg-5 pull-right">
+      <div id="products" class="row list-group col">
+        <div class="well well-sm">
+            <a href="/deals"><strong>My Deals</strong> </a>
+        </div>
+        <% wallposts.forEach(function(item) { %>
+         <div class="item  col-xs-4 col-lg-4">
+             <div class="thumbnail">
+                 <img class="group list-group-image" src="images/test.png" alt="" />
+                 <div class="caption">
+                     <h4 class="group inner list-group-item-heading">
+                          <%= item.title %></h4>
+                     <p class="group inner list-group-item-text">
+                        <%= item.postdata %></p>
+                 </div>
+             </div>
+         </div>
+           <% }); %>
+       </div>
+
+
+    </div>
+  </body>
+</html>

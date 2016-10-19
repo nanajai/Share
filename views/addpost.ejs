@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="javascripts/utilities.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <% include templates/header.ejs %>
+    <form id="postform" method="post" action="/addpost">
+      <div class="form-group" >
+        <label> Tags (comma separated) </label>
+        <input type="text" class="form-control"   name="tags" placeholder="Example input">
+      </div>
+      <div class="form-group">
+        <label>Post</label>
+        <textarea type="text" class="form-control" placeholder="Another input" name="postdata"></textarea>
+      </div>
+  </form>
+
+   <div id="buttonhousing">
+    <button type="caution" class="btn btn-primary"> Cancel </button>
+    <button onclick="submitpost()"type="submit" class="btn btn-success">Submit</button>
+  </div>
+
+
+  </body>
+</html>
