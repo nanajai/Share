@@ -1,15 +1,18 @@
 var express = require('express');
 var router = express.Router();
 var wp = require('../messages.json');
+var dbConfig = require('../dbconfig.json');
 var mongodb = require('mongodb');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   console.log("In router function");
   var MongoClient = mongodb.MongoClient;
-  var url = 'mongodb://localhost:27017/share';
+  // Pull database info from config file
+  var url = 'mongodb://'+dbConfig.hostname+':'+dbConfig.port+'/share';
 
   MongoClient.connect(url,function(err,db){
+    //If db doesent connect should redirect to 500
     if(err){
       res.send(err);
       console.log("Unable to connect to db",err);
@@ -18,7 +21,6 @@ router.get('/', function(req, res, next) {
       console.log("DB connected");
 
       var posts = db.collection('posts');
-      console.log("Posts !!! ",posts);
       var arrayposts = posts.find({}).toArray(function(err, result){
         if(err){
           res.send(err);

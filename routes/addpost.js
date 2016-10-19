@@ -3,6 +3,7 @@ var router = express.Router();
 var fs = require('fs')
 var uuid = require('node-uuid');
 var mongodb = require('mongodb');
+var dbConfig = require('../dbconfig.json');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -13,22 +14,32 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function (req, res,next) {
 
+  var MongoClient = mongodb.MongoClient;
+  var url = 'mongodb://'+dbConfig.hostname+':'+dbConfig.port+'/share';
+
   var time = Date.now || function() {
     return +new Date;
   };
 
-  var newPostJson = {'timestamp':time(),'user':'Jai','title':'Sample Post','postdata':req.body.postdata,'tags':req.body.tags};
+  var mongoClient = mongodb.MongoClient;
+  mongoClient.connect(url,function(err, db){
+    var newPostJson = {timestamp:time(),user:'Jai',title:'Sample Post',
+      postdata:req.body.postdata,tags:req.body.tags};
 
+      var posts = db.collection('posts');
 
-  fs.writeFile('messages.json', JSON.stringify(allposts), function (err) {
-      console.log(err);
+      posts.insert([newPostJson], function(err, result){
+        if(err){
+          console.log("error adding new post");
+          res.send(err);
+        }else{
+          res.redirect("/");
+        }
+      });
+
   });
 
-  res.render('index', {
-            wallposts: allposts.sort(function(a, b) {
-              return parseInt(b.timestamp) - parseInt(a.timestamp);
-            })
-          });
+
  });
 
 module.exports = router;
